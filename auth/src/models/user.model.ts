@@ -1,8 +1,8 @@
-import { Model, Schema, model, Document } from "mongoose";
+import { Model, Schema, model, Document } from "../database";
 import bycrpt from "bcryptjs";
 
 /** An interface that describes the properties that are required to create a new user. */
-interface UserAttrs {
+export interface UserAttrs {
   email: string;
   firstName: string;
   lastName: string;
@@ -10,12 +10,12 @@ interface UserAttrs {
 }
 
 /** An interface that describe the properties that a User Model has. */
-interface UserModel extends Model<UserDoc> {
+export interface IUserModel extends Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc;
 }
 
 /** An interface that describe the properties that a User Document has. */
-interface UserDoc extends Document {
+export interface UserDoc extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,6 +41,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const User = model<UserDoc, UserModel>("User", userSchema);
+const User = model<UserDoc, IUserModel>("User", userSchema);
 
 export default User;

@@ -1,27 +1,16 @@
 import { Request, Response, NextFunction } from "../index";
-import userService from "../services/user.service";
-/** User controller class holds all methods related to User model. */
-class UserController {
+import { UserModel } from "../models";
+import { UserAttrs, UserDoc } from "../models/user.model";
+/** User repository class holds all methods related to User model. */
+class UserRepository {
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userDetails content all required information to create new user.
    * @return newly created user.
    * */
-  async createNewUser(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    const newUserDetails = req.body;
-    const responseOfService = await userService.createNewUser(newUserDetails);
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+  async createNewUser(userDetails: UserAttrs): Promise<UserDoc> {
+    const newlyUserInstance = UserModel.build(userDetails);
+    const newlyCreatedUserDetails = await newlyUserInstance.save();
+    return newlyCreatedUserDetails;
   }
 
   /**
@@ -73,4 +62,4 @@ class UserController {
   ): Promise<Response> {}
 }
 
-export default new UserController();
+export default new UserRepository();

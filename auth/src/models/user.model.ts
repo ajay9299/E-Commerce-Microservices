@@ -38,6 +38,7 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 };
 
 userSchema.pre("save", async function (next) {
+  /** New password hashing. */
   this.password = await bycrpt.hash(this.password, 12);
   next();
 });

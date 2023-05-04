@@ -1,9 +1,15 @@
 import { log } from "console";
 import morgan from "morgan";
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, {
+  Application,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from "express";
 import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.middleware";
 import { dbConnector } from "./database";
-export { Request, Response, NextFunction };
+import productServiceRoutes from "./routes";
 
 const PORT = 3003;
 const app: Application = express();
@@ -20,6 +26,9 @@ app.get("/test", (req: Request, res: Response) => {
     .json({ ok: "ok", message: "This is test route for product service..." });
 });
 
+/** This route handle available routes inside the product service. */
+app.use("/v1", productServiceRoutes);
+
 app.listen(PORT, async () => {
   dbConnector();
   log(
@@ -27,3 +36,5 @@ app.listen(PORT, async () => {
     PORT
   );
 });
+
+export { Request, Response, NextFunction, Router };

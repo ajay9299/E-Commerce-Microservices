@@ -1,32 +1,16 @@
 import { Request, Response, NextFunction } from "../index";
-
-import productService from "../services/product.service";
-
-/** Product controller class holds methods related to Product model. */
-
-class ProductController {
+import { ProductModel } from "../models";
+import { ProductAttrs, ProductDoc } from "../models/product.model";
+/** Product repository class holds all methods related to Product model. */
+class ProductRepository {
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param productDetails content all required information to create new product.
    * @return newly created product.
    * */
-  async createNewProduct(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    const newProductDetails = req.body;
-    const responseOfService = await productService.createNewProduct(
-      newProductDetails
-    );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+  async createNewProduct(productDetails: ProductAttrs): Promise<ProductDoc> {
+    const newlyProductInstance = ProductModel.build(productDetails);
+    const newlyCreatedProductDetails = await newlyProductInstance.save();
+    return newlyCreatedProductDetails;
   }
 
   /**
@@ -45,7 +29,19 @@ class ProductController {
    * @param req express request object.
    * @param res express response object.
    * @param next express next function.
-   * @return update product detail based on productId.
+   * @return user detail based on productId.
+   * */
+  async getProductDetailOfLoggedInProduct(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {}
+
+  /**
+   * @param req express request object.
+   * @param res express response object.
+   * @param next express next function.
+   * @return update user detail based on productId.
    * */
   async updateProductDetailByProductId(
     req: Request,
@@ -66,4 +62,4 @@ class ProductController {
   ): Promise<Response> {}
 }
 
-export default ProductController;
+export default new ProductRepository();

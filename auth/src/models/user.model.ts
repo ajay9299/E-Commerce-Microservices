@@ -35,6 +35,7 @@ userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
+
 const User = model<UserDoc, UserModel>("User", userSchema);
 
 export default User;

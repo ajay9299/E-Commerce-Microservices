@@ -1,10 +1,15 @@
 import { log } from "console";
 import morgan from "morgan";
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, {
+  Application,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from "express";
 import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.middleware";
 import { dbConnector } from "./database";
-import { UserModel } from "./models";
-export { Request, Response, NextFunction };
+import authServiceRoutes from "./routes";
 
 const PORT = 3001;
 const app: Application = express();
@@ -24,17 +29,12 @@ app.get("/test", (req: Request, res: Response) => {
     .json({ ok: "ok", message: "This is test route for auth service..." });
 });
 
-app.post(
-  "/newUser",
-  async (req: Request, res: Response, next: NextFunction) => {
-    log("This is user info", req.body);
-    const newUser = UserModel.build(req.body);
-    const userInfo = await newUser.save();
-    return res.status(200).json({ ok: "ok", userInfo });
-  }
-);
+/** This route handle available routes inside the auth service. */
+app.use("/v1", authServiceRoutes);
 
 app.listen(PORT, async () => {
   dbConnector();
   log("<>==================Auth server up on port====================<>", PORT);
 });
+
+export { Request, Response, NextFunction, Router };

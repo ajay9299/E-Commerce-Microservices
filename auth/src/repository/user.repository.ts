@@ -1,3 +1,4 @@
+import { Types } from "../database";
 import { Request, Response, NextFunction } from "../index";
 import { UserModel } from "../models";
 import { UserAttrs, UserDoc } from "../models/user.model";
@@ -14,52 +15,45 @@ class UserRepository {
   }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userId user's userId.
    * @return user detail based on userId.
    * */
-  async getUserDetailByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  async getUserDetailByUserId(userId: Types.ObjectId): Promise<UserDoc | null> {
+    return await UserModel.findById(userId);
+  }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userId loggedIn user's userId.
    * @return user detail based on userId.
    * */
   async getUserDetailOfLoggedInUser(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    userId: Types.ObjectId
+  ): Promise<UserDoc | null> {
+    return await UserModel.findById(userId);
+  }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userId loggedIn user's userId.
    * @return update user detail based on userId.
    * */
   async updateUserDetailByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    userId: Types.ObjectId,
+    userInfo: any
+  ): Promise<UserDoc | null> {
+    return await UserModel.findByIdAndUpdate({ _id: userId }, userInfo, {
+      new: true,
+    });
+  }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userId loggedIn user's userId.
    * @return deleted user detail based on userId.
    * */
   async deleteUserDetailByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    userId: Types.ObjectId
+  ): Promise<UserDoc | null> {
+    return await UserModel.findByIdAndDelete({ _id: userId });
+  }
 }
 
 export default new UserRepository();

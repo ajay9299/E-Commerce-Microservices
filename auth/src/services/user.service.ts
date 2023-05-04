@@ -24,8 +24,17 @@ class UserService {
    * @param userId userId of logged in user.
    * @return user detail based on userId.
    * */
-  async getUserDetailByUserId(userId: Types.ObjectId): Promise<UserDoc | null> {
-    return await UserModel.findById({ _id: userId });
+  async getUserDetailByUserId(
+    userId: Types.ObjectId
+  ): Promise<ControllerResponse> {
+    const userDetailsByUserId = await userRepository.getUserDetailByUserId(
+      userId
+    );
+    return {
+      success: true,
+      status: 200,
+      data: userDetailsByUserId,
+    };
   }
 
   /**
@@ -33,34 +42,52 @@ class UserService {
    * @return user detail based on userId.
    * */
   async getUserDetailOfLoggedInUser(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    userId: Types.ObjectId
+  ): Promise<ControllerResponse> {
+    const userDetailsByUserId =
+      await userRepository.getUserDetailOfLoggedInUser(userId);
+    return {
+      success: true,
+      status: 200,
+      data: userDetailsByUserId,
+    };
+  }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userId userId of logged in user.
    * @return update user detail based on userId.
    * */
   async updateUserDetailByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    userId: Types.ObjectId,
+    userDetails: any
+  ): Promise<ControllerResponse> {
+    const updatedUserDetails = await userRepository.updateUserDetailByUserId(
+      userId,
+      userDetails
+    );
+    return {
+      success: true,
+      status: 200,
+      data: updatedUserDetails,
+    };
+  }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param userId userId of logged in user.
    * @return deleted user detail based on userId.
    * */
   async deleteUserDetailByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    userId: Types.ObjectId
+  ): Promise<ControllerResponse> {
+    const updatedUserDetails = await userRepository.deleteUserDetailByUserId(
+      userId
+    );
+    return {
+      success: true,
+      status: 200,
+      data: updatedUserDetails,
+    };
+  }
 }
 
 export default new UserService();

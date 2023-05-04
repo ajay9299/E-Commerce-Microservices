@@ -8,8 +8,9 @@ import express, {
   Router,
 } from "express";
 import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.middleware";
-import { dbConnector } from "./database";
+import { Types, dbConnector } from "./database";
 import authServiceRoutes from "./routes";
+import "./helpers/express-request.helper";
 
 const PORT = 3001;
 const app: Application = express();
@@ -33,7 +34,7 @@ app.get("/test", (req: Request, res: Response) => {
 app.use("/v1", authServiceRoutes);
 
 app.listen(PORT, async () => {
-  dbConnector();
+  // dbConnector();
   log("<>==================Auth server up on port====================<>", PORT);
 });
 

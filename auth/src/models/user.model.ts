@@ -9,6 +9,7 @@ export interface UserAttrs {
   password: string;
 }
 
+
 /** An interface that describe the properties that a User Model has. */
 export interface IUserModel extends Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc;

@@ -1,5 +1,7 @@
+import { Types } from "../database";
 import { Request, Response, NextFunction } from "../index";
 import userService from "../services/user.service";
+
 /** User controller class holds all methods related to User model. */
 class UserController {
   /**
@@ -34,7 +36,17 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response> {
+    const userId = new Types.ObjectId(req.params.userId);
+    const responseOfService = await userService.getUserDetailByUserId(userId);
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 
   /**
    * @param req express request object.
@@ -46,7 +58,22 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response> {
+    /** userId of loggedIn user. */
+
+    const userId = new Types.ObjectId(req.userInfo!.userId);
+
+    const responseOfService = await userService.getUserDetailOfLoggedInUser(
+      userId
+    );
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 
   /**
    * @param req express request object.
@@ -58,7 +85,23 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response> {
+    /** userId of loggedIn user. */
+    const userId = new Types.ObjectId(req.userInfo!.userId);
+    const userDetailsForUpdating = req.body;
+
+    const responseOfService = await userService.updateUserDetailByUserId(
+      userId,
+      userDetailsForUpdating
+    );
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 
   /**
    * @param req express request object.
@@ -70,7 +113,21 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response> {
+    /** userId of loggedIn user. */
+    const userId = new Types.ObjectId(req.userInfo!.userId);
+
+    const responseOfService = await userService.deleteUserDetailByUserId(
+      userId
+    );
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 }
 
 export default new UserController();

@@ -1,4 +1,5 @@
 import { Model, Schema, model, Document } from "mongoose";
+import bycrpt from "bcryptjs";
 
 /** An interface that describes the properties that are required to create a new user. */
 interface UserAttrs {
@@ -35,6 +36,10 @@ userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
+userSchema.pre("save", async function (next) {
+  this.password = await bycrpt.hash(this.password, 12);
+  next();
+});
 
 const User = model<UserDoc, UserModel>("User", userSchema);
 

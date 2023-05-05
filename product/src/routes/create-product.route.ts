@@ -1,5 +1,4 @@
-import { log } from "console";
-import { NextFunction, Request, Response, Router } from "../index";
+import {  Router } from "../index";
 import productController from "../controllers/product.controller";
 
 /** Instance of router. */

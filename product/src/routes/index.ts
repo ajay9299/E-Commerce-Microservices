@@ -1,9 +1,9 @@
 import { Router } from "../index";
-import productRoute from "./product.route";
+import createProductRoute from "./create-product.route";
 
 /** Instance of router. */
 const router = Router();
 /** Handle all the routes present in auth service. */
-router.use("/product", productRoute);
+router.use("/products", createProductRoute);
 
 export default router;

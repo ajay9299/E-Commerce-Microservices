@@ -66,4 +66,4 @@ class ProductController {
   ): Promise<Response> {}
 }
 
-export default ProductController;
+export default new ProductController();

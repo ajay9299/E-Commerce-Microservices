@@ -4,6 +4,25 @@ import userService from "../services/user.service";
 
 /** User controller class holds all methods related to User model. */
 class UserController {
+  private static instance: UserController;
+
+  /**
+   * The Singleton's constructor should always be private to prevent direct
+   * construction calls with the `new` operator.
+   */
+  private constructor() {}
+
+  /**
+   * The Singleton class defines the `getInstance` method that lets clients access
+   * the unique singleton instance.
+   */
+  public static getInstance(): UserController {
+    if (!UserController.instance) {
+      UserController.instance = new UserController();
+    }
+    return UserController.instance;
+  }
+
   /**
    * @param req express request object.
    * @param res express response object.
@@ -21,6 +40,29 @@ class UserController {
       return res
         .status(responseOfService.status)
         .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
+
+  /**
+   * @param req express request object.
+   * @param res express response object.
+   * @param next express next function.
+   * @return jwt token.
+   * */
+  async loginUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {
+    const { email, password } = req.body;
+    const responseOfService = await userService.loginUser(email, password);
+    if (responseOfService.success === false)
+      return res.status(responseOfService.status).json({
+        errors: responseOfService.errors,
+        message: responseOfService.message,
+      });
     return res
       .status(responseOfService.status)
       .json({ data: responseOfService.data });
@@ -61,10 +103,10 @@ class UserController {
   ): Promise<Response> {
     /** userId of loggedIn user. */
 
-    const userId = new Types.ObjectId(req.userInfo!.userId);
+    const userId = req.userInfo?.userId;
 
     const responseOfService = await userService.getUserDetailOfLoggedInUser(
-      userId
+      userId!
     );
     if (responseOfService.success === false)
       return res
@@ -109,7 +151,7 @@ class UserController {
    * @param next express next function.
    * @return deleted user detail based on userId.
    * */
-  async deleteUserDetailByUserId(
+  public async deleteUserDetailByUserId(
     req: Request,
     res: Response,
     next: NextFunction
@@ -130,4 +172,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default UserController.getInstance();

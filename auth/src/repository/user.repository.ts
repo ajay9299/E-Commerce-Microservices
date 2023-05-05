@@ -33,6 +33,14 @@ class UserRepository {
   }
 
   /**
+   * @param email loggedIn user's email.
+   * @return user detail based on email.
+   * */
+  async getUserDetailByEmail(email: string): Promise<UserDoc | null> {
+    return await UserModel.findOne({ email });
+  }
+
+  /**
    * @param userId loggedIn user's userId.
    * @return update user detail based on userId.
    * */

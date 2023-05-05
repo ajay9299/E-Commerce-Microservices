@@ -1,8 +1,7 @@
 import { Types } from "../database";
 /** Basic userInfo for express request object. */
-interface UserInfo {
+export interface UserInfo {
   userId: Types.ObjectId;
-  email: string;
 }
 
 /** Define the userInfo in express global space. */

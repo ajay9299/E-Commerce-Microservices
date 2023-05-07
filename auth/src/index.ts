@@ -11,6 +11,7 @@ import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.mi
 import authServiceRoutes from "./routes";
 import "./helpers/express-request.helper";
 import { dbConnector } from "./database";
+import { consumeMessages } from "./queues/queue-consumer";
 
 const PORT = 3001;
 const app: Application = express();
@@ -34,7 +35,10 @@ app.get("/test", (req: Request, res: Response) => {
 app.use("/v1", authServiceRoutes);
 
 app.listen(PORT, async () => {
+  /** Connect to database*/
   dbConnector();
+  /** Consume queue messages. */
+  consumeMessages();
   log("<>==================Auth server up on port====================<>", PORT);
 });
 

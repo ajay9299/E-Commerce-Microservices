@@ -2,7 +2,7 @@ import { responseMessages, statusCodes, uniqueValues } from "../constants";
 import { Request, Response, NextFunction } from "../index";
 import Jwt from "../helpers/jwt-token.helper";
 import { UserInfo } from "../helpers/express-request.helper";
-import { log } from "console";
+
 /**
  * @param req express request object.
  * @param res express request object.
@@ -20,12 +20,8 @@ export const jwtAuthMiddleware = async (
       errors: responseMessages.INVALID_TOKEN,
     });
 
-  log("auth--->", authHeader);
-
   /** Separate token from authHeader */
   const jwtToken: string = authHeader!.split(" ")[uniqueValues.ONE];
-
-  log("jwt--->", jwtToken);
   const userData = (await Jwt.jwtDecoder(jwtToken)) as UserInfo;
   req.userInfo = userData;
   next();

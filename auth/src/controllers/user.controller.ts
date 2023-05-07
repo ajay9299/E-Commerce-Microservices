@@ -129,7 +129,7 @@ class UserController {
     next: NextFunction
   ): Promise<Response> {
     /** userId of loggedIn user. */
-    const userId = new Types.ObjectId(req.userInfo!.userId);
+    const userId = req.userInfo!.userId;
     const userDetailsForUpdating = req.body;
 
     const responseOfService = await userService.updateUserDetailByUserId(

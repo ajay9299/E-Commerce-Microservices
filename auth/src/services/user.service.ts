@@ -2,7 +2,7 @@ import { responseMessages, statusCodes, uniqueValues } from "../constants";
 import { Types } from "../database";
 import jwtTokenHelper from "../helpers/jwt-token.helper";
 import { ControllerResponse } from "../helpers/response.helper";
-
+import queueProducer from "../queues/queue-producer";
 import User, { UserAttrs } from "../models/user.model";
 import userRepository from "../repository/user.repository";
 /** User service class holds all methods related to User model. */
@@ -32,6 +32,12 @@ class UserService {
    * */
   async createNewUser(userDetails: UserAttrs): Promise<ControllerResponse> {
     const newlyCreatedUser = await userRepository.createNewUser(userDetails);
+
+    /**
+     * Push newlyCreated user info inside queue.
+     * */
+    await queueProducer.publishMessage("user-info", newlyCreatedUser);
+
     return {
       success: uniqueValues.TRUE,
       status: statusCodes.SUCCESS,

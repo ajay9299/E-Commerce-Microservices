@@ -33,6 +33,18 @@ class ProductController {
    * @param req express request object.
    * @param res express response object.
    * @param next express next function.
+   * @return all products details.
+   * */
+  async getAllProductsDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {}
+
+  /**
+   * @param req express request object.
+   * @param res express response object.
+   * @param next express next function.
    * @return product detail based on productId.
    * */
   async getProductDetailByProductId(

@@ -4,7 +4,7 @@ import productController from "../controllers/product.controller";
 /** Instance of router. */
 const router = Router();
 
-/** This route is used to create new product. */
-router.post("/create", productController.createNewProduct);
+/** This route is used to get all products. */
+router.get("/allProducts", productController.getAllProductsDetails);
 
 export default router;

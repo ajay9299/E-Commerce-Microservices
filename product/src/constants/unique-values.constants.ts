@@ -12,8 +12,10 @@ export default {
   DEFAULT_LIMIT_NUMBER: 10,
 
   /** Event names*/
-
   USER_CREATE_EVENT: "user-create-event",
   USER_UPDATE_EVENT: "user-update-event",
   USER_DELETE_EVENT: "user-delete-event",
+  PRODUCT_CREATE_EVENT: "product-create-event",
+  PRODUCT_UPDATE_EVENT: "product-update-event",
+  PRODUCT_DELETE_EVENT: "product-delete-event",
 };

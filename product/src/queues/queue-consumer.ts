@@ -1,5 +1,6 @@
 import amqp, { Channel } from "amqplib";
 import UserEventHandler from "../events/user-event-handler.events";
+import { log } from "console";
 /**
  * Config file for consumer.
  * */
@@ -17,6 +18,7 @@ export async function consumeMessages() {
   const channel: Channel = await connection.createChannel();
   await channel.assertExchange(config.rabbitMQ.exchangeName, "direct");
   const q = await channel.assertQueue(config.rabbitMQ.queueName);
+  log("This is queue", q);
   await channel.bindQueue(q.queue, config.rabbitMQ.exchangeName, "user-info");
 
   channel.consume(q.queue, (msg) => {

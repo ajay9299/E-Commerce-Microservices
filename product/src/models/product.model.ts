@@ -1,4 +1,5 @@
 import { Model, Schema, model, Document } from "mongoose";
+import { Types } from "../database";
 
 /** An interface that describes the properties that are required to create a new product. */
 export interface ProductAttrs {
@@ -7,6 +8,7 @@ export interface ProductAttrs {
   images: [string];
   avlQuantity: number;
   category: string;
+  userId: Types.ObjectId;
 }
 
 /** An interface that describe the properties that a Product Model has. */
@@ -23,6 +25,7 @@ export interface ProductDoc extends Document {
 /** Mongoose schema of product. */
 const productSchema = new Schema(
   {
+    userId: { type: Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
     images: { type: [String], default: null },

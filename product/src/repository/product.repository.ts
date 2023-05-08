@@ -1,3 +1,4 @@
+import { Types } from "../database";
 import { Request, Response, NextFunction } from "../index";
 import { ProductModel } from "../models";
 import { ProductAttrs, ProductDoc } from "../models/product.model";

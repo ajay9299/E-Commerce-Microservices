@@ -1,9 +1,9 @@
 import { model, Model, Schema, Types } from "../database";
 import { BasicProductDetails } from "./product.model";
 
-export class CartItem {
-  product!: BasicProductDetails;
-  quantity!: number;
+export interface CartItem {
+  product: BasicProductDetails;
+  quantity: number;
 }
 
 export interface CartAttribute {
@@ -23,7 +23,7 @@ export interface ICartModel extends Model<CartDoc> {
 
 const cartSchema = new Schema(
   {
-    items: { type: [CartItem], default: [] },
+    items: { type: Types.ObjectId, ref: "CartItem", default: [] },
     totalPrice: { type: Number },
     user: { type: Types.ObjectId },
   },

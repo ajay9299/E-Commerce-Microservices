@@ -1,10 +1,11 @@
 import amqp, { Channel } from "amqplib";
+import { log } from "console";
 /**
  * Config file for consumer.
  * */
 const config = {
   rabbitMQ: {
-    url: "amqps://dhgvaxcl:wdYGklBnb696efoEYeRKcZJsIhjVZFfh@cougar.rmq.cloudamqp.com/dhgvaxcl",
+    url: "amqps://hidefrrv:hlCxqA6OaFFFPVx6nTqwh5xv9cFXEPXJ@puffin.rmq2.cloudamqp.com/hidefrrv",
     exchangeName: "user_detail_exchange",
     queueName: "AuthQueue",
   },
@@ -16,6 +17,7 @@ export async function consumeMessages() {
   const channel: Channel = await connection.createChannel();
   await channel.assertExchange(config.rabbitMQ.exchangeName, "direct");
   const q = await channel.assertQueue(config.rabbitMQ.queueName);
+  log("This created queue", q);
   await channel.bindQueue(q.queue, config.rabbitMQ.exchangeName, "Info");
 
   channel.consume(q.queue, (msg) => {

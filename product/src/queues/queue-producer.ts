@@ -1,8 +1,8 @@
 import amqp, { Channel } from "amqplib";
 const config = {
   rabbitMQ: {
-    url: "amqps://dhgvaxcl:wdYGklBnb696efoEYeRKcZJsIhjVZFfh@cougar.rmq.cloudamqp.com/dhgvaxcl",
-    exchangeName: "user_detail_exchange",
+    url: "amqps://hidefrrv:hlCxqA6OaFFFPVx6nTqwh5xv9cFXEPXJ@puffin.rmq2.cloudamqp.com/hidefrrv",
+    exchangeName: "product_detail_exchange",
   },
 };
 
@@ -15,7 +15,7 @@ class Producer {
     this.channel = await connection.createChannel();
   }
 
-  async publishMessage(routingKey: string, message: any) {
+  async publishMessage(routingKey: string, data: any, eventName: string) {
     if (!this.channel) {
       await this.createChannel();
     }
@@ -26,7 +26,7 @@ class Producer {
     this.channel!.publish(
       exchangeName,
       routingKey,
-      Buffer.from(JSON.stringify(message))
+      Buffer.from(JSON.stringify({ data, eventName }))
     );
 
     console.log(

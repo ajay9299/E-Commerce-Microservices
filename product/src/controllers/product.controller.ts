@@ -1,3 +1,4 @@
+import { log } from "console";
 import { Request, Response, NextFunction } from "../index";
 
 import productService from "../services/product.service";
@@ -17,8 +18,15 @@ class ProductController {
     next: NextFunction
   ): Promise<Response> {
     const newProductDetails = req.body;
+
+    log("Product", newProductDetails);
+    /** userId of loggedIn user. */
+    const userId = req.userInfo?.userId;
+    log("UserId", userId);
+
     const responseOfService = await productService.createNewProduct(
-      newProductDetails
+      newProductDetails,
+      userId!
     );
     if (responseOfService.success === false)
       return res
@@ -35,24 +43,24 @@ class ProductController {
    * @param next express next function.
    * @return all products details.
    * */
-  async getAllProductsDetails(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    const { page, limit } = req.query;
-    const responseOfService = await productService.getAllProductsDetails(
-      page,
-      limit
-    );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
-  }
+  // async getAllProductsDetails(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {
+  //   const { page, limit } = req.query;
+  //   const responseOfService = await productService.getAllProductsDetails(
+  //     page,
+  //     limit
+  //   );
+  //   if (responseOfService.success === false)
+  //     return res
+  //       .status(responseOfService.status)
+  //       .json({ errors: responseOfService.errors });
+  //   return res
+  //     .status(responseOfService.status)
+  //     .json({ data: responseOfService.data });
+  // }
 
   /**
    * @param req express request object.

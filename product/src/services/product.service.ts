@@ -1,9 +1,11 @@
+import { uniqueValues } from "../constants";
 import { Types } from "../database";
 import { ControllerResponse } from "../helpers/response.helper";
 import { Request, Response, NextFunction } from "../index";
 import { ProductModel } from "../models";
 
 import Product, { ProductAttrs, ProductDoc } from "../models/product.model";
+import queueProducer from "../queues/queue-producer";
 import productRepository from "../repository/product.repository";
 /** Product service class holds all methods related to Product model. */
 class ProductService {
@@ -12,10 +14,21 @@ class ProductService {
    * @return newly created product.
    * */
   async createNewProduct(
-    productDetails: ProductAttrs
+    productDetails: ProductAttrs,
+    userId: Types.ObjectId
   ): Promise<ControllerResponse> {
+    productDetails.userId = userId;
     const newlyCreatedProduct = await productRepository.createNewProduct(
       productDetails
+    );
+
+    /**
+     * Push newlyCreated user info inside queue.
+     * */
+    await queueProducer.publishMessage(
+      "product-info",
+      newlyCreatedProduct,
+      uniqueValues.PRODUCT_CREATE_EVENT
     );
     return {
       success: true,
@@ -28,25 +41,25 @@ class ProductService {
    * @param productId productId of logged in user.
    * @return product detail based on productId.
    * */
-  async getAllProductsDetails(page, limit): Promise<ControllerResponse> {
-    const allProductsDetails = await productRepository.getAllProductsDetails();
-    // const page = page * 1 || 1;
-    // const limit = limit * 1 || 100;
-    // const skip = (page - 1) * limit;
+  // async getAllProductsDetails(page, limit): Promise<ControllerResponse> {
+  //   const allProductsDetails = await productRepository.getAllProductsDetails();
+  //   // const page = page * 1 || 1;
+  //   // const limit = limit * 1 || 100;
+  //   // const skip = (page - 1) * limit;
 
-    // page=3&limit=10, 1-10, page 1, 11-20, page 2, 21-30 page 3
-    // query = query.skip(skip).limit(limit);
+  //   // page=3&limit=10, 1-10, page 1, 11-20, page 2, 21-30 page 3
+  //   // query = query.skip(skip).limit(limit);
 
-    // if (req.query.page) {
-    //   const numTours = await Tour.countDocuments();
-    //   if (skip >= numTours) throw new Error("This page does not exist");
-    // }
-    return {
-      success: true,
-      status: 200,
-      data: allProductsDetails,
-    };
-  }
+  //   // if (req.query.page) {
+  //   //   const numTours = await Tour.countDocuments();
+  //   //   if (skip >= numTours) throw new Error("This page does not exist");
+  //   // }
+  //   return {
+  //     success: true,
+  //     status: 200,
+  //     data: allProductsDetails,
+  //   };
+  // }
 
   // /**s
   //  * @param productId productId of logged in user.

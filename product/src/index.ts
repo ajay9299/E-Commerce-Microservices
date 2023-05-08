@@ -15,6 +15,8 @@ import { consumeMessages } from "./queues/queue-consumer";
 const PORT = 3003;
 const app: Application = express();
 
+/** Body parse middleware. */
+app.use(express.json());
 /** Outgoing request logger middleware. */
 app.use(morgan("dev"));
 /** Incoming request logger middleware. */

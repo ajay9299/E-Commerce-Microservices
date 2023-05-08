@@ -43,24 +43,26 @@ class ProductController {
    * @param next express next function.
    * @return all products details.
    * */
-  // async getAllProductsDetails(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> {
-  //   const { page, limit } = req.query;
-  //   const responseOfService = await productService.getAllProductsDetails(
-  //     page,
-  //     limit
-  //   );
-  //   if (responseOfService.success === false)
-  //     return res
-  //       .status(responseOfService.status)
-  //       .json({ errors: responseOfService.errors });
-  //   return res
-  //     .status(responseOfService.status)
-  //     .json({ data: responseOfService.data });
-  // }
+  async getAllProductsDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {
+    const page = req.query.page as string;
+    const limit = req.query.limit as string;
+
+    const responseOfService = await productService.getAllProductsDetails(
+      Number(page),
+      Number(limit)
+    );
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 
   /**
    * @param req express request object.

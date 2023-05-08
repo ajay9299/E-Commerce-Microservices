@@ -1,5 +1,6 @@
 import { uniqueValues } from "../constants";
 import { Types } from "../database";
+import APIFeatures from "../helpers/api-features.helper";
 import { ControllerResponse } from "../helpers/response.helper";
 import { Request, Response, NextFunction } from "../index";
 import { ProductModel } from "../models";
@@ -41,25 +42,25 @@ class ProductService {
    * @param productId productId of logged in user.
    * @return product detail based on productId.
    * */
-  // async getAllProductsDetails(page, limit): Promise<ControllerResponse> {
-  //   const allProductsDetails = await productRepository.getAllProductsDetails();
-  //   // const page = page * 1 || 1;
-  //   // const limit = limit * 1 || 100;
-  //   // const skip = (page - 1) * limit;
-
-  //   // page=3&limit=10, 1-10, page 1, 11-20, page 2, 21-30 page 3
-  //   // query = query.skip(skip).limit(limit);
-
-  //   // if (req.query.page) {
-  //   //   const numTours = await Tour.countDocuments();
-  //   //   if (skip >= numTours) throw new Error("This page does not exist");
-  //   // }
-  //   return {
-  //     success: true,
-  //     status: 200,
-  //     data: allProductsDetails,
-  //   };
-  // }
+  async getAllProductsDetails(
+    page: number,
+    limit: number
+  ): Promise<ControllerResponse> {
+    const allProductsDetails = await productRepository.getAllProductsDetails();
+    // EXECUTE QUERY
+    const features = new APIFeatures(allProductsDetails, { page, limit })
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const products = await features.query;
+    console.log("<<<<<<<>>>>>>>>", products);
+    return {
+      success: true,
+      status: 200,
+      data: products,
+    };
+  }
 
   // /**s
   //  * @param productId productId of logged in user.

@@ -1,6 +1,5 @@
-import {  model, Model, Schema } from "mongoose";
-import { BasicProductDetails } from "../model/basicProductDetails";
-import { BasicUserDetails } from "../model/basicUserDetails";
+import { model, Model, Schema, Types } from "../database";
+import { BasicProductDetails } from "./product.model";
 
 export class CartItem {
   product!: BasicProductDetails;
@@ -10,7 +9,7 @@ export class CartItem {
 export interface CartAttribute {
   items: CartItem[];
   totalPrice: number;
-  user: BasicUserDetails;
+  user: Types.ObjectId;
 }
 
 export interface CartDoc extends Document {
@@ -18,23 +17,23 @@ export interface CartDoc extends Document {
   updatedAt: Date;
 }
 
-export interface ICartModel extends Model<CartDoc>{
-    build(attributes:CartAttribute) : CartDoc;
+export interface ICartModel extends Model<CartDoc> {
+  build(attributes: CartAttribute): CartDoc;
 }
 
 const cartSchema = new Schema(
   {
     items: { type: [CartItem], default: [] },
     totalPrice: { type: Number },
-    user: { type: BasicUserDetails },
+    user: { type: Types.ObjectId },
   },
   { timestamps: true, versionKey: false }
 );
 
 const Cart = model<CartDoc, ICartModel>("Cart", cartSchema);
 
-cartSchema.statics.build = (attributes: CartAttribute)=>{
-    return new Cart(attributes);
-}
+cartSchema.statics.build = (attributes: CartAttribute) => {
+  return new Cart(attributes);
+};
 
 export default Cart;

@@ -7,4 +7,8 @@ export default {
   ONE: 1,
   TWO: 2,
   THREE: 3,
+  /** Event names*/
+  USER_CREATE_EVENT: "user-create-event",
+  USER_UPDATE_EVENT: "user-update-event",
+  USER_DELETE_EVENT: "user-delete-event",
 };

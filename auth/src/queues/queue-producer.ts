@@ -15,7 +15,7 @@ class Producer {
     this.channel = await connection.createChannel();
   }
 
-  async publishMessage(routingKey: string, message: any) {
+  async publishMessage(routingKey: string, data: any, eventName: string) {
     if (!this.channel) {
       await this.createChannel();
     }
@@ -26,7 +26,7 @@ class Producer {
     this.channel!.publish(
       exchangeName,
       routingKey,
-      Buffer.from(JSON.stringify(message))
+      Buffer.from(JSON.stringify({ data, eventName }))
     );
 
     console.log(

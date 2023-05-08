@@ -36,7 +36,11 @@ class UserService {
     /**
      * Push newlyCreated user info inside queue.
      * */
-    await queueProducer.publishMessage("user-info", newlyCreatedUser);
+    await queueProducer.publishMessage(
+      "user-info",
+      newlyCreatedUser,
+      uniqueValues.USER_CREATE_EVENT
+    );
 
     return {
       success: uniqueValues.TRUE,
@@ -127,6 +131,16 @@ class UserService {
       userId,
       userDetails
     );
+
+    /**
+     * Push updatedUserDetails user info inside queue.
+     * */
+    await queueProducer.publishMessage(
+      "user-info",
+      updatedUserDetails,
+      uniqueValues.USER_UPDATE_EVENT
+    );
+
     return {
       success: uniqueValues.TRUE,
       status: statusCodes.SUCCESS,
@@ -142,14 +156,24 @@ class UserService {
   async deleteUserDetailByUserId(
     userId: Types.ObjectId
   ): Promise<ControllerResponse> {
-    const updatedUserDetails = await userRepository.deleteUserDetailByUserId(
+    const deletedUserDetails = await userRepository.deleteUserDetailByUserId(
       userId
     );
+
+    /**
+     * Push deletedUserDetails user info inside queue.
+     * */
+    await queueProducer.publishMessage(
+      "user-info",
+      deletedUserDetails,
+      uniqueValues.USER_DELETE_EVENT
+    );
+
     return {
       success: uniqueValues.TRUE,
       status: statusCodes.SUCCESS,
       message: responseMessages.SUCCESSFULLY_PROFILE_DELETED,
-      data: updatedUserDetails,
+      data: deletedUserDetails,
     };
   }
 }

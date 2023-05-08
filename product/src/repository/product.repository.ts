@@ -14,16 +14,25 @@ class ProductRepository {
   }
 
   /**
+   * @param productDetails content all required information to create new product.
+   * @return newly created product.
+   * */
+  async getAllProductsDetails(): Promise<ProductDoc[]> {
+    const allProductsDetails = await ProductModel.find();
+    return allProductsDetails;
+  }
+
+  /**
    * @param req express request object.
    * @param res express response object.
    * @param next express next function.
    * @return product detail based on productId.
    * */
-  async getProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async getProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 
   /**
    * @param req express request object.
@@ -31,11 +40,11 @@ class ProductRepository {
    * @param next express next function.
    * @return user detail based on productId.
    * */
-  async getProductDetailOfLoggedInProduct(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async getProductDetailOfLoggedInProduct(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 
   /**
    * @param req express request object.
@@ -43,11 +52,11 @@ class ProductRepository {
    * @param next express next function.
    * @return update user detail based on productId.
    * */
-  async updateProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async updateProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 
   /**
    * @param req express request object.
@@ -55,11 +64,11 @@ class ProductRepository {
    * @param next express next function.
    * @return deleted product detail based on productId.
    * */
-  async deleteProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async deleteProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 }
 
 export default new ProductRepository();

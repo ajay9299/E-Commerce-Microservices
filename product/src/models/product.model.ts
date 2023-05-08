@@ -6,6 +6,7 @@ export interface ProductAttrs {
   description: string;
   images: [string];
   avlQuantity: number;
+  category: string;
 }
 
 /** An interface that describe the properties that a Product Model has. */
@@ -26,6 +27,7 @@ const productSchema = new Schema(
     description: { type: String, required: true },
     images: { type: [String], default: null },
     avlQuantity: { type: Number },
+    category: { type: String },
   },
   { timestamps: true, versionKey: false }
 );

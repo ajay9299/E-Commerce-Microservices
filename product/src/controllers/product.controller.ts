@@ -39,7 +39,20 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response> {
+    const { page, limit } = req.query;
+    const responseOfService = await productService.getAllProductsDetails(
+      page,
+      limit
+    );
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 
   /**
    * @param req express request object.
@@ -47,11 +60,11 @@ class ProductController {
    * @param next express next function.
    * @return product detail based on productId.
    * */
-  async getProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async getProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 
   /**
    * @param req express request object.
@@ -59,11 +72,11 @@ class ProductController {
    * @param next express next function.
    * @return update product detail based on productId.
    * */
-  async updateProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async updateProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 
   /**
    * @param req express request object.
@@ -71,11 +84,11 @@ class ProductController {
    * @param next express next function.
    * @return deleted product detail based on productId.
    * */
-  async deleteProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+  // async deleteProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {}
 }
 
 export default new ProductController();

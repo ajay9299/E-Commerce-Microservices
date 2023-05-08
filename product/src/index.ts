@@ -10,6 +10,7 @@ import express, {
 import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.middleware";
 import { dbConnector } from "./database";
 import productServiceRoutes from "./routes";
+import { consumeMessages } from "./queues/queue-consumer";
 
 const PORT = 3003;
 const app: Application = express();
@@ -30,7 +31,8 @@ app.get("/test", (req: Request, res: Response) => {
 app.use("/v1", productServiceRoutes);
 
 app.listen(PORT, async () => {
-  dbConnector();
+  dbConnector(); /** Consume queue messages. */
+  consumeMessages();
   log(
     "<==================Product server up on port====================>",
     PORT

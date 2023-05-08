@@ -1,16 +1,15 @@
 import { log } from "console";
 import morgan from "morgan";
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response ,Router} from "express";
 import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.middleware";
 import { dbConnector } from "./database";
-export { Request, Response, NextFunction };
 
 const PORT = 3002;
 const app: Application = express();
 
-/** Outgoing request logger middleware. */
-app.use(morgan("dev"));
-/** Incoming request logger middleware. */
+  /** Outgoing request logger middleware. */
+  app.use(morgan("dev"));
+  /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
 
 app.get("/test", (req: Request, res: Response) => {
@@ -32,3 +31,5 @@ app.listen(PORT, async () => {
     PORT
   );
 });
+
+export {Request, Response,NextFunction,Router}

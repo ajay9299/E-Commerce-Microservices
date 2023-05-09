@@ -6,8 +6,8 @@ import { log } from "console";
 const config = {
   rabbitMQ: {
     url: "amqps://hidefrrv:hlCxqA6OaFFFPVx6nTqwh5xv9cFXEPXJ@puffin.rmq2.cloudamqp.com/hidefrrv",
-    exchangeName: "user_detail_exchange",
-    queueName: "AuthQueue",
+    exchangeName: "seller_detail_exchange",
+    queueName: "SellerQueue",
   },
 };
 

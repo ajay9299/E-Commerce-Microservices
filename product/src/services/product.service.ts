@@ -16,9 +16,9 @@ class ProductService {
    * */
   async createNewProduct(
     productDetails: ProductAttrs,
-    userId: Types.ObjectId
+    sellerId: Types.ObjectId
   ): Promise<ControllerResponse> {
-    productDetails.userId = userId;
+    productDetails.sellerId = sellerId;
     const newlyCreatedProduct = await productRepository.createNewProduct(
       productDetails
     );

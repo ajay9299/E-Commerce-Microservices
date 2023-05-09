@@ -1,14 +1,18 @@
 import uniqueValuesConstants from "../constants/unique-values.constants";
 import { Types } from "../database";
-import User from "../models/user.model";
+import { UserModel } from "../models";
+
+
+/**
+ * Below UserEventHandler class based on Facade design pattern.
+ * */
 
 /** UserEventHandler event class holds methods related to User model. */
-
 class UserEventHandler {
   private async createUser(userInfo: any): Promise<void> {
     try {
       const { userId, firstName, lastName } = userInfo;
-      const newlyUserInstance = User.build({
+      const newlyUserInstance = UserModel.build({
         userId,
         firstName,
         lastName,
@@ -21,7 +25,7 @@ class UserEventHandler {
   private async updateUser(userInfo: any): Promise<void> {
     try {
       const { userId, firstName, lastName } = userInfo;
-      await User.findOneAndUpdate(
+      await UserModel.findOneAndUpdate(
         { userId: new Types.ObjectId(userId) },
         {
           firstName,
@@ -35,7 +39,7 @@ class UserEventHandler {
   async deleteUser(userInfo: any): Promise<void> {
     try {
       const { userId } = userInfo;
-      await User.findOneAndDelete({ userId: new Types.ObjectId(userId) });
+      await UserModel.findOneAndDelete({ userId: new Types.ObjectId(userId) });
     } catch (err) {
       console.log("error", err);
     }

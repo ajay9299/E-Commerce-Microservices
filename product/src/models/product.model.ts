@@ -8,7 +8,7 @@ export interface ProductAttrs {
   images: [string];
   avlQuantity: number;
   category: string;
-  userId: Types.ObjectId;
+  sellerId: Types.ObjectId;
 }
 
 /** An interface that describe the properties that a Product Model has. */
@@ -25,7 +25,7 @@ export interface ProductDoc extends Document {
 /** Mongoose schema of product. */
 const productSchema = new Schema(
   {
-    userId: { type: Types.ObjectId, ref: "User", required: true },
+    sellerId: { type: Types.ObjectId, ref: "Seller", required: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
     images: { type: [String], default: null },

@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 class Jwt {
   private static instance: Jwt;
-  public static jwtKey = "this_is_secret_key_for_seller";
+  public static jwtKey = "this_is_secret_key";
 
   /**
    * The Singleton's constructor should always be private to prevent direct

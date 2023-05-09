@@ -1,4 +1,4 @@
-import { connect, Types } from "mongoose";
+import { connect, Types, Model, Document, Schema, model } from "mongoose";
 
 export const dbConnector = async () => {
   try {
@@ -12,4 +12,4 @@ export const dbConnector = async () => {
 };
 
 /** Import the required mongoose methods.*/
-export { Types };
+export { Schema, Document, Types, Model, model };

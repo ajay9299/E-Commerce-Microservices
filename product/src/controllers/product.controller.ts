@@ -19,14 +19,18 @@ class ProductController {
   ): Promise<Response> {
     const newProductDetails = req.body;
 
+    log("RequestInfo", req.userInfo);
     log("Product", newProductDetails);
     /** userId of loggedIn user. */
-    const userId = req.userInfo?.userId;
-    log("UserId", userId);
+    const sellerId = req.userInfo?.sellerId;
+    log(sellerId);
+    if (!sellerId) {
+      return res.status(400).json({ ok: "Bad" });
+    }
 
     const responseOfService = await productService.createNewProduct(
       newProductDetails,
-      userId!
+      sellerId!
     );
     if (responseOfService.success === false)
       return res

@@ -1,4 +1,4 @@
-import { Model, Schema, model, Document, Types } from "mongoose";
+import { Model, Schema, model, Document, Types } from "../database";
 
 /** An interface that describes the properties that are required to create a new user. */
 export interface UserAttrs {

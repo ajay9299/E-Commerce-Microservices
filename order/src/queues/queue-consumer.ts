@@ -6,7 +6,7 @@ import { log } from "console";
  * */
 const config = {
   rabbitMQ: {
-    url: "amqps://hidefrrv:hlCxqA6OaFFFPVx6nTqwh5xv9cFXEPXJ@puffin.rmq2.cloudamqp.com/hidefrrv",
+    url: "amqps://xqgdmmzr:f32M8aeQUmgcriKEM9x3AvcP-ZMT-MxJ@puffin.rmq2.cloudamqp.com/xqgdmmzr",
     userExchangeName: "user_detail_exchange",
     productExchangeName: "product_detail_exchange",
     productOrderQueueName: "ProductOrderQueue",
@@ -47,7 +47,7 @@ export async function consumeMessages() {
     if (msg) {
       const queueInfo = JSON.parse(msg.content.toString());
 
-      // userEventHandlerEvents.operation(queueInfo.eventName, queueInfo.data);
+      userEventHandlerEvents.operation(queueInfo.eventName, queueInfo.data);
       console.log("Messages in userOrderQueue", queueInfo);
       channel.ack(msg);
     }
@@ -56,8 +56,7 @@ export async function consumeMessages() {
   channel.consume(productOrderQueue.queue, (msg) => {
     if (msg) {
       const queueInfo = JSON.parse(msg.content.toString());
-
-      // userEventHandlerEvents.operation(queueInfo.eventName, queueInfo.data);
+      userEventHandlerEvents.operation(queueInfo.eventName, queueInfo.data);
       console.log("Messages in productOrderQueue", queueInfo);
       channel.ack(msg);
     }

@@ -5,7 +5,7 @@ import { log } from "console";
  * */
 const config = {
   rabbitMQ: {
-    url: "amqps://hidefrrv:hlCxqA6OaFFFPVx6nTqwh5xv9cFXEPXJ@puffin.rmq2.cloudamqp.com/hidefrrv",
+    url: "amqps://xqgdmmzr:f32M8aeQUmgcriKEM9x3AvcP-ZMT-MxJ@puffin.rmq2.cloudamqp.com/xqgdmmzr",
     exchangeName: "seller_detail_exchange",
     queueName: "SellerQueue",
   },

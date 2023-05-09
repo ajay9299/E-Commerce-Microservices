@@ -17,7 +17,6 @@ export const jwtAuthMiddleware = async (
 ): Promise<Response | void> => {
   /** Fetch the jwt token from headers. */
   const authHeader = req.headers.authorization;
-  log(".>>>>>>>>>>", authHeader);
   if (!authHeader || authHeader.split(" ").length !== uniqueValues.TWO)
     res.status(statusCodes.BAD_REQUEST).json({
       errors: responseMessages.INVALID_TOKEN,
@@ -25,8 +24,9 @@ export const jwtAuthMiddleware = async (
 
   /** Separate token from authHeader */
   const jwtToken: string = authHeader!.split(" ")[uniqueValues.ONE];
-  log("token", jwtToken);
   const userData = (await Jwt.jwtDecoder(jwtToken)) as UserInfo;
+
+  log("payload", userData);
   req.userInfo = userData;
   next();
 };

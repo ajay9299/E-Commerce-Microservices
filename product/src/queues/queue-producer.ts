@@ -1,7 +1,7 @@
 import amqp, { Channel } from "amqplib";
 const config = {
   rabbitMQ: {
-    url: "amqps://hidefrrv:hlCxqA6OaFFFPVx6nTqwh5xv9cFXEPXJ@puffin.rmq2.cloudamqp.com/hidefrrv",
+    url: "amqps://xqgdmmzr:f32M8aeQUmgcriKEM9x3AvcP-ZMT-MxJ@puffin.rmq2.cloudamqp.com/xqgdmmzr",
     exchangeName: "product_detail_exchange",
   },
 };
@@ -23,7 +23,7 @@ class Producer {
     const exchangeName = config.rabbitMQ.exchangeName;
     await this.channel!.assertExchange(exchangeName, "direct");
 
-    this.channel!.publish(
+    this.channel!.publish(  
       exchangeName,
       routingKey,
       Buffer.from(JSON.stringify({ data, eventName }))

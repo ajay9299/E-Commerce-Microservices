@@ -5,6 +5,6 @@ import productController from "../controllers/product.controller";
 const router = Router();
 
 /** This route is used to get all products. */
-// router.get("/allProducts", productController.getAllProductsDetails);
+router.get("/allProducts", productController.getAllProductsDetails);
 
 export default router;

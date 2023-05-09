@@ -46,15 +46,13 @@ class ProductService {
     page: number,
     limit: number
   ): Promise<ControllerResponse> {
-    const allProductsDetails = await productRepository.getAllProductsDetails();
-    // EXECUTE QUERY
-    const features = new APIFeatures(allProductsDetails, { page, limit })
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
+    const allProductsDetails = productRepository.getAllProductsDetails();
+
+    const features = new APIFeatures(allProductsDetails, {
+      page,
+      limit,
+    }).paginate();
     const products = await features.query;
-    console.log("<<<<<<<>>>>>>>>", products);
     return {
       success: true,
       status: 200,
@@ -62,27 +60,37 @@ class ProductService {
     };
   }
 
-  // /**s
-  //  * @param productId productId of logged in user.
-  //  * @return product detail based on productId.
-  //  * */
-  // async getProductDetailByProductId(
-  //   productId: Types.ObjectId
-  // ): Promise<ProductDoc | null> {
-  //   return await ProductModel.findById({ _id: productId });
-  // }
-
   /**
    * @param req express request object.
    * @param res express response object.
    * @param next express next function.
    * @return update product detail based on productId.
    * */
-  // async updateProductDetailByProductId(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> {}
+  async updateProductDetailByProductId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<ControllerResponse> {
+    console.log("<<<req>>>", req);
+    // productDetails.userId = userId;
+
+    // const updateProductsDetails =
+    //   productRepository.updateProductDetailByProductId();
+
+    // /**
+    //  * Push newlyCreated user info inside queue.
+    //  * */
+    // await queueProducer.publishMessage(
+    //   "product-info",
+    //   newlyCreatedProduct,
+    //   uniqueValues.PRODUCT_CREATE_EVENT
+    // );
+    // return {
+    //   success: true,
+    //   status: 200,
+    //   data: newlyCreatedProduct,
+    // };
+  }
 
   /**
    * @param req express request object.

@@ -18,8 +18,8 @@ class ProductRepository {
    * @param productDetails content all required information to create new product.
    * @return newly created product.
    * */
-  async getAllProductsDetails(): Promise<ProductDoc[]> {
-    const allProductsDetails = await ProductModel.find();
+  getAllProductsDetails(): any {
+    const allProductsDetails = ProductModel.find();
     return allProductsDetails;
   }
 

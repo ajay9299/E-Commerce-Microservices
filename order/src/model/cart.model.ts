@@ -1,15 +1,12 @@
-import { model, Model, Schema, Types } from "../database";
-import { BasicProductDetails } from "./product.model";
+import { model, Model, Schema, Types, Document } from "../database";
 
 export interface CartItem {
-  product: BasicProductDetails;
-  quantity: number;
+  productId: Types.ObjectId;
+  productQuantity: number;
 }
 
 export interface CartAttribute {
   items: CartItem[];
-  totalPrice: number;
-  user: Types.ObjectId;
 }
 
 export interface CartDoc extends Document {
@@ -24,8 +21,8 @@ export interface ICartModel extends Model<CartDoc> {
 const cartSchema = new Schema(
   {
     items: { type: Types.ObjectId, ref: "CartItem", default: [] },
-    totalPrice: { type: Number },
-    user: { type: Types.ObjectId },
+    totalPrice: { type: String, required: true },
+    userId: { type: Types.ObjectId, required: true, unique: true },
   },
   { timestamps: true, versionKey: false }
 );

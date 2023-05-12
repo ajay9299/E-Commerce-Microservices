@@ -31,6 +31,7 @@ const sellerSchema = new Schema(
     email: { type: String, required: true, unique: true },
     companyName: { type: String, required: true },
     companyAddress: { type: String, default: null },
+    role: { type: String, default: "seller", required: true },
     password: { type: String, required: true },
   },
   {

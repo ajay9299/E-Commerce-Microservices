@@ -12,7 +12,7 @@ import authServiceRoutes from "./routes";
 import "./helpers/express-request.helper";
 import { dbConnector } from "./database";
 import { consumeMessages } from "./queues/queue-consumer";
-
+import cors from "cors";
 const PORT = 3001;
 const app: Application = express();
 
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
-
+app.use(cors({ origin: "*" }));
 app.get("/test", (req: Request, res: Response) => {
   log("This is test route for auth service...");
   res

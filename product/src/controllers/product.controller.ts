@@ -73,31 +73,31 @@ class ProductController {
    * @param next express next function.
    * @return update product detail based on productId.
    * */
-  async updateProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    const updateProductDetails = req.body;
+  // async updateProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {
+  //   const updateProductDetails = req.body;
 
-    log("Product", updateProductDetails);
-    /** userId of loggedIn user. */
-    const userId = req.userInfo?.userId;
-    log("UserId", userId);
+  //   log("Product", updateProductDetails);
+  //   /** userId of loggedIn user. */
+  //   const userId = req.userInfo?.userId;
+  //   log("UserId", userId);
 
-    const responseOfService =
-      await productService.updateProductDetailByProductId(
-        updateProductDetails,
-        userId!
-      );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
-  }
+  //   const responseOfService =
+  //     await productService.updateProductDetailByProductId(
+  //       updateProductDetails,
+  //       userId!
+  //     );
+  //   if (responseOfService.success === false)
+  //     return res
+  //       .status(responseOfService.status)
+  //       .json({ errors: responseOfService.errors });
+  //   return res
+  //     .status(responseOfService.status)
+  //     .json({ data: responseOfService.data });
+  // }
 
   /**
    * @param req express request object.

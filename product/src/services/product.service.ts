@@ -66,31 +66,31 @@ class ProductService {
    * @param next express next function.
    * @return update product detail based on productId.
    * */
-  async updateProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<ControllerResponse> {
-    console.log("<<<req>>>", req);
-    // productDetails.userId = userId;
+  // async updateProductDetailByProductId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<ControllerResponse> {
+  //   console.log("<<<req>>>", req);
+  //   // productDetails.userId = userId;
 
-    // const updateProductsDetails =
-    //   productRepository.updateProductDetailByProductId();
+  //   // const updateProductsDetails =
+  //   //   productRepository.updateProductDetailByProductId();
 
-    // /**
-    //  * Push newlyCreated user info inside queue.
-    //  * */
-    // await queueProducer.publishMessage(
-    //   "product-info",
-    //   newlyCreatedProduct,
-    //   uniqueValues.PRODUCT_CREATE_EVENT
-    // );
-    // return {
-    //   success: true,
-    //   status: 200,
-    //   data: newlyCreatedProduct,
-    // };
-  }
+  //   // /**
+  //   //  * Push newlyCreated user info inside queue.
+  //   //  * */
+  //   // await queueProducer.publishMessage(
+  //   //   "product-info",
+  //   //   newlyCreatedProduct,
+  //   //   uniqueValues.PRODUCT_CREATE_EVENT
+  //   // );
+  //   // return {
+  //   //   success: true,
+  //   //   status: 200,
+  //   //   data: newlyCreatedProduct,
+  //   // };
+  // }
 
   /**
    * @param req express request object.

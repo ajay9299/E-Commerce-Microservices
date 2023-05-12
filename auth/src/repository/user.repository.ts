@@ -9,9 +9,7 @@ class UserRepository {
    * @return newly created user.
    * */
   async createNewUser(userDetails: UserAttrs): Promise<UserDoc> {
-    const newlyUserInstance = UserModel.build(userDetails);
-    const newlyCreatedUserDetails = await newlyUserInstance.save();
-    return newlyCreatedUserDetails;
+    return await UserModel.build(userDetails).save();
   }
 
   /**

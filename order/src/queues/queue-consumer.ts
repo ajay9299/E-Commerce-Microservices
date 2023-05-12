@@ -1,6 +1,7 @@
 import amqp, { Channel } from "amqplib";
 import userEventHandlerEvents from "../events/user-event-handler.events";
 import { log } from "console";
+import productEventHandlerEvents from "../events/product-event-handler.events";
 /**
  * Config file for consumer.
  * */
@@ -56,7 +57,7 @@ export async function consumeMessages() {
   channel.consume(productOrderQueue.queue, (msg) => {
     if (msg) {
       const queueInfo = JSON.parse(msg.content.toString());
-      userEventHandlerEvents.operation(queueInfo.eventName, queueInfo.data);
+      productEventHandlerEvents.operation(queueInfo.eventName, queueInfo.data);
       console.log("Messages in productOrderQueue", queueInfo);
       channel.ack(msg);
     }

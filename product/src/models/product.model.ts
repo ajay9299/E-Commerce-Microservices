@@ -9,6 +9,7 @@ export interface ProductAttrs {
   avlQuantity: number;
   category: string;
   sellerId: Types.ObjectId;
+  unitPrice: string;
 }
 
 /** An interface that describe the properties that a Product Model has. */
@@ -31,8 +32,17 @@ const productSchema = new Schema(
     images: { type: [String], default: null },
     avlQuantity: { type: Number },
     category: { type: String },
+    unitPrice: { type: String, required: true },
   },
-  { timestamps: true, versionKey: false }
+  {
+    timestamps: true,
+    versionKey: false,
+    toJSON: {
+      transform(doc, ret) {
+        ret.productId = ret._id;
+      },
+    },
+  }
 );
 
 productSchema.statics.build = (attrs: ProductAttrs) => {

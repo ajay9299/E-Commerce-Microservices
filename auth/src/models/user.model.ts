@@ -33,11 +33,18 @@ const userSchema = new Schema(
     middleName: { type: String, default: null },
     lastName: { type: String, required: true },
     password: { type: String, required: true },
+    role: { type: String, default: "auth", required: true },
   },
-  { timestamps: true, versionKey: false, toJSON: {transform(doc,ret){
-    ret.userId = ret._id
-    delete ret.password
-  }} }
+  {
+    timestamps: true,
+    versionKey: false,
+    toJSON: {
+      transform(doc, ret) {
+        ret.userId = ret._id;
+        delete ret.password;
+      },
+    },
+  }
 );
 
 /**

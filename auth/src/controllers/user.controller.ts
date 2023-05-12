@@ -57,15 +57,14 @@ class UserController {
     next: NextFunction
   ): Promise<Response> {
     const { email, password } = req.body;
-    const responseOfService = await userService.loginUser(email, password);
-    if (responseOfService.success === false)
-      return res.status(responseOfService.status).json({
-        errors: responseOfService.errors,
-        message: responseOfService.message,
+    const { success, status, data, errors, message } =
+      await userService.loginUser(email, password);
+    if (success === false)
+      return res.status(status).json({
+        errors,
+        message,
       });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+    return res.status(status).json(data);
   }
 
   /**
@@ -80,14 +79,11 @@ class UserController {
     next: NextFunction
   ): Promise<Response> {
     const userId = new Types.ObjectId(req.params.userId);
-    const responseOfService = await userService.getUserDetailByUserId(userId);
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+    const { success, status, data, errors, message } =
+      await userService.getUserDetailByUserId(userId);
+    if (success === false) return res.status(status).json({ errors: errors });
+
+    return res.status(status).json(data);
   }
 
   /**

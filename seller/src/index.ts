@@ -12,6 +12,7 @@ import sellerServiceRoutes from "./routes";
 import "./helpers/express-request.helper";
 import { dbConnector } from "./database";
 import { consumeMessages } from "./queues/queue-consumer";
+import cors from "cors";
 
 const PORT = 3004;
 const app: Application = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
+app.use(cors({ origin: "*" }));
 
 app.get("/test", (req: Request, res: Response) => {
   log("This is test route for seller service...");
@@ -39,7 +41,10 @@ app.listen(PORT, async () => {
   dbConnector();
   /** Consume queue messages. */
   consumeMessages();
-  log("<>==================Seller server up on port====================<>", PORT);
+  log(
+    "<>==================Seller server up on port====================<>",
+    PORT
+  );
 });
 
 export { Request, Response, NextFunction, Router };

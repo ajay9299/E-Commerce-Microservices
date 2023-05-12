@@ -2,10 +2,8 @@ import { uniqueValues } from "../constants";
 import { Types } from "../database";
 import APIFeatures from "../helpers/api-features.helper";
 import { ControllerResponse } from "../helpers/response.helper";
-import { Request, Response, NextFunction } from "../index";
-import { ProductModel } from "../models";
 
-import Product, { ProductAttrs, ProductDoc } from "../models/product.model";
+import { ProductAttrs } from "../models/product.model";
 import queueProducer from "../queues/queue-producer";
 import productRepository from "../repository/product.repository";
 /** Product service class holds all methods related to Product model. */
@@ -39,8 +37,9 @@ class ProductService {
   }
 
   /**
-   * @param productId productId of logged in user.
-   * @return product detail based on productId.
+   * @param page pass the page number
+   * @param limit pass the limit number
+   * @return all products details.
    * */
   async getAllProductsDetails(
     page: number,
@@ -61,48 +60,67 @@ class ProductService {
   }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return update product detail based on productId.
+   * @param productDetails product details object.
+   * @param sellerId seller Id object.
+   * @param productId product Id.
+   * @return updated product detail based on productId.
    * */
-  async updateProductDetailByProductId(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  async updateProductDetailsByProductId(
+    productDetails: ProductAttrs,
+    sellerId: Types.ObjectId,
+    productId: string
   ): Promise<ControllerResponse> {
-    console.log("<<<req>>>", req);
-    // productDetails.userId = userId;
-
-    // const updateProductsDetails =
-    //   productRepository.updateProductDetailByProductId();
-
-    // /**
-    //  * Push newlyCreated user info inside queue.
-    //  * */
-    // await queueProducer.publishMessage(
-    //   "product-info",
-    //   newlyCreatedProduct,
-    //   uniqueValues.PRODUCT_CREATE_EVENT
-    // );
-    // return {
-    //   success: true,
-    //   status: 200,
-    //   data: newlyCreatedProduct,
-    // };
+    const newlyUpdatedProduct =
+      await productRepository.updateProductDetailsByProductId(
+        productDetails,
+        sellerId,
+        productId
+      );
+    console.log("<<<newlyUpdatedProduct>>>", newlyUpdatedProduct);
+    /**
+     * Push newlyUpdated product info inside queue.
+     * */
+    await queueProducer.publishMessage(
+      "product-info",
+      newlyUpdatedProduct,
+      uniqueValues.PRODUCT_UPDATE_EVENT
+    );
+    return {
+      success: true,
+      status: 200,
+      data: newlyUpdatedProduct,
+    };
   }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
+   * @param sellerId seller Id object.
+   * @param productId product Id.
    * @return deleted product detail based on productId.
    * */
-  // async deleteProductDetailByProductId(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> {}
+  async deleteProductDetailByProductId(
+    sellerId: Types.ObjectId,
+    productId: string
+  ): Promise<ControllerResponse> {
+    const deletedProduct =
+      await productRepository.deleteProductDetailByProductId(
+        sellerId,
+        productId
+      );
+    console.log("<<<deletedProduct>>>", deletedProduct);
+    /**
+     * Push deleted product info inside queue.
+     * */
+    await queueProducer.publishMessage(
+      "product-info",
+      deletedProduct,
+      uniqueValues.PRODUCT_DELETE_EVENT
+    );
+    return {
+      success: true,
+      status: 204,
+      data: null,
+    };
+  }
 }
 
 export default new ProductService();

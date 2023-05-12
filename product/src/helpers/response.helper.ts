@@ -2,6 +2,6 @@
 export interface ControllerResponse {
   success: boolean;
   status: number;
-  data?: object;
+  data?: object | null;
   errors?: string;
 }

@@ -5,11 +5,11 @@ import { jwtAuthMiddleware } from "../middlewares/auth.middleware";
 /** Instance of router. */
 const router = Router();
 
-/** This route is used to update product. */
-router.patch(
-  "/update/:id",
+/** This route is used to delete product. */
+router.delete(
+  "/delete/:id",
   jwtAuthMiddleware,
-  productController.updateProductDetails
+  productController.deleteProduct
 );
 
 export default router;

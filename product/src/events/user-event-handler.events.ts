@@ -2,7 +2,6 @@ import uniqueValuesConstants from "../constants/unique-values.constants";
 import { Types } from "../database";
 import { UserModel } from "../models";
 
-
 /**
  * Below UserEventHandler class based on Facade design pattern.
  * */

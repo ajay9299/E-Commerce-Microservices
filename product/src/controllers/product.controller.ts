@@ -22,7 +22,7 @@ class ProductController {
 
     log("RequestInfo", req.userInfo);
     log("Product", newProductDetails);
-    /** userId of loggedIn user. */
+    /** sellerId of loggedIn seller. */
     const sellerId = req.userInfo?.sellerId;
     log(sellerId);
     if (!sellerId) {
@@ -71,24 +71,30 @@ class ProductController {
    * @param req express request object.
    * @param res express response object.
    * @param next express next function.
-   * @return update product detail based on productId.
+   * @return updated product detail based on productId.
    * */
-  async updateProductDetailByProductId(
+  async updateProductDetails(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response> {
-    const updateProductDetails = req.body;
+    const productDetails = req.body;
 
-    log("Product", updateProductDetails);
-    /** userId of loggedIn user. */
-    const userId = req.userInfo?.userId;
-    log("UserId", userId);
+    log("RequestInfo", req.userInfo);
+    log("Product", productDetails);
+    /** sellerId of loggedIn user. */
+    const sellerId = req.userInfo?.sellerId;
+    const productId = req?.params?.id;
+    log(sellerId);
+    if (!sellerId) {
+      return res.status(400).json({ ok: "Bad" });
+    }
 
     const responseOfService =
-      await productService.updateProductDetailByProductId(
-        updateProductDetails,
-        userId!
+      await productService.updateProductDetailsByProductId(
+        productDetails,
+        sellerId!,
+        productId
       );
     if (responseOfService.success === false)
       return res
@@ -115,13 +121,33 @@ class ProductController {
    * @param req express request object.
    * @param res express response object.
    * @param next express next function.
-   * @return deleted product detail based on productId.
+   * @return nothing based on productId.
    * */
-  // async deleteProductDetailByProductId(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> {}
+  async deleteProduct(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {
+    log("RequestInfo", req.userInfo);
+
+    /** sellerId of loggedIn user. */
+    const sellerId = req.userInfo?.sellerId;
+    const productId = req?.params?.id;
+    log(sellerId);
+    if (!sellerId) {
+      return res.status(400).json({ ok: "Bad" });
+    }
+
+    const responseOfService =
+      await productService.deleteProductDetailByProductId(sellerId!, productId);
+    if (responseOfService.success === false)
+      return res
+        .status(responseOfService.status)
+        .json({ errors: responseOfService.errors });
+    return res
+      .status(responseOfService.status)
+      .json({ data: responseOfService.data });
+  }
 }
 
 export default new ProductController();

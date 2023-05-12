@@ -1,5 +1,4 @@
 import { Types } from "../database";
-import { Request, Response, NextFunction } from "../index";
 import { ProductModel } from "../models";
 import { ProductAttrs, ProductDoc } from "../models/product.model";
 /** Product repository class holds all methods related to Product model. */
@@ -15,8 +14,7 @@ class ProductRepository {
   }
 
   /**
-   * @param productDetails content all required information to create new product.
-   * @return newly created product.
+   * @return all products details.
    * */
   getAllProductsDetails(): any {
     const allProductsDetails = ProductModel.find();
@@ -48,28 +46,39 @@ class ProductRepository {
   // ): Promise<Response> {}
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return update user detail based on productId.
+   * @param productDetails pass product details object.
+   * @param sellerId pass seller Id.
+   * @param productId pass product Id.
+   * @return updated product detail based on productId.
    * */
-  // async updateProductDetailByProductId(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> {}
+  async updateProductDetailsByProductId(
+    productDetails: ProductAttrs,
+    sellerId: Types.ObjectId,
+    productId: string
+  ): Promise<ProductDoc | null> {
+    return await ProductModel.findOneAndUpdate(
+      { sellerId: sellerId, _id: productId },
+      productDetails,
+      {
+        new: true,
+      }
+    );
+  }
 
   /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return deleted product detail based on productId.
+   * @param sellerId pass seller Id.
+   * @param productId pass product Id.
+   * @return deleted product(nothing) based on productId.
    * */
-  // async deleteProductDetailByProductId(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> {}
+  async deleteProductDetailByProductId(
+    sellerId: Types.ObjectId,
+    productId: string
+  ): Promise<ProductDoc | null> {
+    return await ProductModel.findOneAndDelete({
+      sellerId: sellerId,
+      _id: productId,
+    });
+  }
 }
 
 export default new ProductRepository();

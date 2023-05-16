@@ -60,15 +60,14 @@ class SellerController {
     next: NextFunction
   ): Promise<Response> {
     const { email, password } = req.body;
-    const responseOfService = await sellerService.loginSeller(email, password);
-    if (responseOfService.success === false)
-      return res.status(responseOfService.status).json({
-        errors: responseOfService.errors,
-        message: responseOfService.message,
+    const { success, status, data, errors, message } =
+      await sellerService.loginSeller(email, password);
+    if (success === false)
+      return res.status(status).json({
+        errors,
+        message,
       });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+    return res.status(status).json(data);
   }
 
   /**

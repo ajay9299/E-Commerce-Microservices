@@ -11,7 +11,7 @@ import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.mi
 import { dbConnector } from "./database";
 import productServiceRoutes from "./routes";
 import { consumeMessages } from "./queues/queue-consumer";
-
+import cors from 'cors'
 const PORT = 3003;
 const app: Application = express();
 
@@ -19,6 +19,7 @@ const app: Application = express();
 app.use(express.json());
 /** Outgoing request logger middleware. */
 app.use(morgan("dev"));
+app.use(cors({ origin: "*" }));
 /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
 

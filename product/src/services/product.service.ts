@@ -117,7 +117,7 @@ class ProductService {
     );
     return {
       success: true,
-      status: 204,
+      status: 200,
       data: null,
     };
   }

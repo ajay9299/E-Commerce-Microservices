@@ -1,17 +1,22 @@
 import { Types } from "../database";
 import { CartModel } from "../model";
-import { CartAttribute, CartDoc } from "../model/cart.model";
+import { CartDoc, CartItem } from "../model/cart.model";
 
 /** Cart repository class holds all methods related to Cart model. */
 class CartRepository {
   /**
-   * @param CartDetails content all required information to create new Cart.
+   * @param productDetails content all required information to create new Cart.
    * @return newly created Cart.
    * */
-  async crateNewCart(CartDetails: CartAttribute): Promise<CartDoc> {
-    const newlyCartInstance = CartModel.build(CartDetails);
-    const newlyCreatedCartDetails = await newlyCartInstance.save();
-    return newlyCreatedCartDetails;
+  async crateNewCart(
+    productDetails: CartItem,
+    userId: Types.ObjectId
+  ): Promise<CartDoc> {
+    const newlyCartInstance = CartModel.build({
+      items: [productDetails],
+      userId,
+    });
+    return await newlyCartInstance.save();
   }
 
   /**
@@ -21,7 +26,61 @@ class CartRepository {
   async getCartDetailOfLoggedInUser(
     userId: Types.ObjectId
   ): Promise<CartDoc | null> {
-    return await CartModel.findOne(userId);
+    return await CartModel.findOne({ userId });
+  }
+
+  /**
+   * @param userId loggedIn user's userId.
+   * @return Cart detail based on userId.
+   * */
+  async getCompleteCartDetailOfLoggedInUser(
+    userId: Types.ObjectId
+  ): Promise<CartDoc[] | null> {
+    return await CartModel.aggregate([
+      { $match: { userId: new Types.ObjectId(userId) } },
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.productId",
+          foreignField: "productId",
+          as: "productInfo",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                description: 1,
+                unitPrice: 1,
+                images: 1,
+                productQuantity: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          productInfo: 1,
+        },
+      },
+      {
+        $addFields: {
+          totalPrice: {
+            $sum: {
+              $map: {
+                input: "$productInfo",
+                as: "item",
+                in: {
+                  $toDouble: "$$item.unitPrice",
+                },
+              },
+            },
+          },
+          totalItems: {
+            $size: "$productInfo",
+          },
+        },
+      },
+    ]);
   }
 
   /**

@@ -1,3 +1,4 @@
+import { log } from "console";
 import { Types } from "../database";
 import { Request, Response, NextFunction } from "../index";
 import cartService from "../services/cart.service";
@@ -34,146 +35,110 @@ class CartController {
     res: Response,
     next: NextFunction
   ): Promise<Response> {
-    const newCartDetails = req.body;
+    const productDetails = req.body;
     const userId = req.userInfo?.userId;
-    const responseOfService = await cartService.addToCart(
-      newCartDetails,
-      userId
-    );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+    const { status, data, message, errors, success } =
+      await cartService.addToCart(productDetails, userId!);
+    if (success === false) return res.status(status).json({ errors: errors });
+    return res.status(status).json(data);
   }
 
-  /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return jwt token.
-   * */
-  async loginCart(
+  // /**
+  //  * @param req express request object.
+  //  * @param res express response object.
+  //  * @param next express next function.
+  //  * @return Cart detail based on CartId.
+  //  * */
+  // async getCartDetailByCartId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {
+  //   const CartId = new Types.ObjectId(req.params.CartId);
+  //   const responseOfService = await CartService.getCartDetailByCartId(CartId);
+  //   if (responseOfService.success === false)
+  //     return res
+  //       .status(responseOfService.status)
+  //       .json({ errors: responseOfService.errors });
+  //   return res
+  //     .status(responseOfService.status)
+  //     .json({ data: responseOfService.data });
+  // }
+
+  // /**
+  //  * @param req express request object.
+  //  * @param res express response object.
+  //  * @param next express next function.
+  //  * @return Cart detail based on CartId.
+  //  * */
+  async getCartDetailOfLoggedInUser(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response> {
-    const { email, password } = req.body;
-    const responseOfService = await CartService.loginCart(email, password);
-    if (responseOfService.success === false)
-      return res.status(responseOfService.status).json({
-        errors: responseOfService.errors,
-        message: responseOfService.message,
-      });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
+    /** userId of loggedIn user*/
+    const userId = req.userInfo?.userId;
+
+    console.log("userId", userId);
+    const { status, data, message, errors, success } =
+      await cartService.getCartDetailOfLoggedUserByUserId(userId!);
+    if (success === false) return res.status(status).json({ errors: errors });
+    return res.status(status).json({ data, message });
   }
 
-  /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return Cart detail based on CartId.
-   * */
-  async getCartDetailByCartId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    const CartId = new Types.ObjectId(req.params.CartId);
-    const responseOfService = await CartService.getCartDetailByCartId(CartId);
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
-  }
+  // /**
+  //  * @param req express request object.
+  //  * @param res express response object.
+  //  * @param next express next function.
+  //  * @return update Cart detail based on CartId.
+  //  * */
+  // async updateCartDetailByCartId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {
+  //   /** CartId of loggedIn Cart. */
+  //   const CartId = req.CartInfo!.CartId;
+  //   const CartDetailsForUpdating = req.body;
 
-  /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return Cart detail based on CartId.
-   * */
-  async getCartDetailOfLoggedInCart(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    /** CartId of loggedIn Cart. */
+  //   const responseOfService = await CartService.updateCartDetailByCartId(
+  //     CartId,
+  //     CartDetailsForUpdating
+  //   );
+  //   if (responseOfService.success === false)
+  //     return res
+  //       .status(responseOfService.status)
+  //       .json({ errors: responseOfService.errors });
+  //   return res
+  //     .status(responseOfService.status)
+  //     .json({ data: responseOfService.data });
+  // }
 
-    const CartId = req.CartInfo?.CartId;
+  // /**
+  //  * @param req express request object.
+  //  * @param res express response object.
+  //  * @param next express next function.
+  //  * @return deleted Cart detail based on CartId.
+  //  * */
+  // public async deleteCartDetailByCartId(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response> {
+  //   /** CartId of loggedIn Cart. */
+  //   const CartId = new Types.ObjectId(req.CartInfo!.CartId);
 
-    const responseOfService = await CartService.getCartDetailOfLoggedInCart(
-      CartId!
-    );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
-  }
-
-  /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return update Cart detail based on CartId.
-   * */
-  async updateCartDetailByCartId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    /** CartId of loggedIn Cart. */
-    const CartId = req.CartInfo!.CartId;
-    const CartDetailsForUpdating = req.body;
-
-    const responseOfService = await CartService.updateCartDetailByCartId(
-      CartId,
-      CartDetailsForUpdating
-    );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
-  }
-
-  /**
-   * @param req express request object.
-   * @param res express response object.
-   * @param next express next function.
-   * @return deleted Cart detail based on CartId.
-   * */
-  public async deleteCartDetailByCartId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
-    /** CartId of loggedIn Cart. */
-    const CartId = new Types.ObjectId(req.CartInfo!.CartId);
-
-    const responseOfService = await CartService.deleteCartDetailByCartId(
-      CartId
-    );
-    if (responseOfService.success === false)
-      return res
-        .status(responseOfService.status)
-        .json({ errors: responseOfService.errors });
-    return res
-      .status(responseOfService.status)
-      .json({ data: responseOfService.data });
-  }
+  //   const responseOfService = await CartService.deleteCartDetailByCartId(
+  //     CartId
+  //   );
+  //   if (responseOfService.success === false)
+  //     return res
+  //       .status(responseOfService.status)
+  //       .json({ errors: responseOfService.errors });
+  //   return res
+  //     .status(responseOfService.status)
+  //     .json({ data: responseOfService.data });
+  // }
 }
 
 export default CartController.getInstance();

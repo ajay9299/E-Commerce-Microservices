@@ -11,7 +11,7 @@ import { incomingRequestLoggerMiddleware } from "./middlewares/request-logger.mi
 import { dbConnector } from "./database";
 import productServiceRoutes from "./routes";
 import { consumeMessages } from "./queues/queue-consumer";
-import cors from 'cors'
+import cors from "cors";
 const PORT = 3003;
 const app: Application = express();
 
@@ -23,7 +23,7 @@ app.use(cors({ origin: "*" }));
 /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
 
-app.get("/test", (req: Request, res: Response) => {
+app.get("/test/product", (req: Request, res: Response) => {
   log("This is test route for product service...");
   res
     .status(200)

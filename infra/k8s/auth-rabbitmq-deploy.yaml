@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-rabbitmq-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: auth-rabbitmq
+    spec:
+      containers:
+        - name: auth-rabbitmq
+          image: rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-rabbitmq-service
+spec:
+  selector:
+    app: auth-rabbitmq
+  ports:
+    - name: amqp
+      protocol: TCP
+      port: 5672
+      targetPort: 5672

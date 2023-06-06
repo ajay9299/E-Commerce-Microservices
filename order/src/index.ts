@@ -23,7 +23,7 @@ app.use(cors({ origin: "*" }));
 app.use(incomingRequestLoggerMiddleware);
 app.use(express.json());
 
-app.get("/test", (req: Request, res: Response) => {
+app.get("/test/order", (req: Request, res: Response) => {
   log("This is test route for order service...");
   res
     .status(200)

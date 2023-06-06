@@ -10,17 +10,59 @@ spec:
     - host: auth.com
       http:
         paths:
-          - path: /test
+          - path: /test/auth
             pathType: Prefix
             backend:
               service:
                 name: auth-service
                 port:
                   number: 3001
-          - path: /v1/?(.*)
+          - path: /v1/auth/?(.*)
             pathType: Prefix
             backend:
               service:
                 name: auth-service
                 port:
                   number: 3001
+          - path: /test/seller
+            pathType: Prefix
+            backend:
+              service:
+                name: seller-service
+                port:
+                  number: 3004
+          - path: /v1/seller/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: seller-service
+                port:
+                  number: 3004
+          - path: /test/order
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service
+                port:
+                  number: 3002
+          - path: /v1/order/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service
+                port:
+                  number: 3002
+          - path: /test/product
+            pathType: Prefix
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: 3003
+          - path: /v1/product/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: 3003

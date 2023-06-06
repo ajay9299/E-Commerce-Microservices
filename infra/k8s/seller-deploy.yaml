@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seller-deployment
+  labels:
+    app: seller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seller
+  template:
+    metadata:
+      labels:
+        app: seller
+    spec:
+      containers:
+        - name: seller
+          image: ajay9299/seller-e-commerce
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seller-service
+spec:
+  type: NodePort
+  selector:
+    app: seller
+  ports:
+    - name: seller
+      protocol: TCP
+      port: 3004
+      targetPort: 3004

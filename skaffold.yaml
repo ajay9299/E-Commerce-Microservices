@@ -32,3 +32,11 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: ajay9299/seller-e-commerce
+      context: seller
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .

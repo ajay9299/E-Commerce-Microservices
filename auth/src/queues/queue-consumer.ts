@@ -3,9 +3,11 @@ import { log } from "console";
 /**
  * Config file for consumer.
  * */
+let url = "amqp://auth-rabbitmq-service:5672";
 const config = {
+  //  url: "amqps://zjcmznwk:4yiy92qklc0bqnRQ9CAVo7zyxhObcdPj@puffin.rmq2.cloudamqp.com/zjcmznwk",
   rabbitMQ: {
-    url: "amqps://xqgdmmzr:f32M8aeQUmgcriKEM9x3AvcP-ZMT-MxJ@puffin.rmq2.cloudamqp.com/xqgdmmzr",
+    url,
     exchangeName: "user_detail_exchange",
     queueName: "AuthQueue",
   },

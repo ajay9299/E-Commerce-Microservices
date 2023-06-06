@@ -5,9 +5,11 @@ import productEventHandlerEvents from "../events/product-event-handler.events";
 /**
  * Config file for consumer.
  * */
+let url = "amqp://auth-rabbitmq-service:5672";
+// url: "amqps://zjcmznwk:4yiy92qklc0bqnRQ9CAVo7zyxhObcdPj@puffin.rmq2.cloudamqp.com/zjcmznwk",
 const config = {
   rabbitMQ: {
-    url: "amqps://xqgdmmzr:f32M8aeQUmgcriKEM9x3AvcP-ZMT-MxJ@puffin.rmq2.cloudamqp.com/xqgdmmzr",
+    url,
     userExchangeName: "user_detail_exchange",
     productExchangeName: "product_detail_exchange",
     productOrderQueueName: "ProductOrderQueue",

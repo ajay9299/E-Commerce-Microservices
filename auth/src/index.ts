@@ -24,7 +24,7 @@ app.use(morgan("dev"));
 /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
 app.use(cors({ origin: "*" }));
-app.get("/test", (req: Request, res: Response) => {
+app.get("/test/auth", (req: Request, res: Response) => {
   log("This is test route for auth service...");
   res
     .status(200)

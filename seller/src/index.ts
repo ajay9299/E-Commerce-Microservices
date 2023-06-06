@@ -25,8 +25,8 @@ app.use(morgan("dev"));
 /** Incoming request logger middleware. */
 app.use(incomingRequestLoggerMiddleware);
 app.use(cors({ origin: "*" }));
-
-app.get("/test", (req: Request, res: Response) => {
+// test
+app.get("/test/seller", (req: Request, res: Response) => {
   log("This is test route for seller service...");
   res
     .status(200)
@@ -39,7 +39,7 @@ app.use("/v1", sellerServiceRoutes);
 app.listen(PORT, async () => {
   /** Connect to database*/
   dbConnector();
-  /** Consume queue messages. */
+  // /** Consume queue messages. */
   consumeMessages();
   log(
     "<>==================Seller server up on port====================<>",

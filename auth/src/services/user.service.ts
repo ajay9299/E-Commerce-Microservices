@@ -36,11 +36,11 @@ class UserService {
     /**
      * Push newlyCreated user info inside queue.
      * */
-    await queueProducer.publishMessage(
-      "user-info",
-      newlyCreatedUser,
-      uniqueValues.USER_CREATE_EVENT
-    );
+    // await queueProducer.publishMessage(
+    //   "user-info",
+    //   newlyCreatedUser,
+    //   uniqueValues.USER_CREATE_EVENT
+    // );
 
     return {
       success: uniqueValues.TRUE,

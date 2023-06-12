@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { Types } from "../database";
 import { Request, Response, NextFunction } from "../index";
 import userService from "../services/user.service";
@@ -36,6 +37,7 @@ class UserController {
   ): Promise<Response> {
     const newUserDetails = req.body;
     const responseOfService = await userService.createNewUser(newUserDetails);
+
     if (responseOfService.success === false)
       return res
         .status(responseOfService.status)
@@ -78,6 +80,10 @@ class UserController {
     res: Response,
     next: NextFunction
   ): Promise<Response> {
+    if (!isValidObjectId(req.params.userId)) {
+      return res.status(400).json();
+    }
+
     const userId = new Types.ObjectId(req.params.userId);
     const { success, status, data, errors, message } =
       await userService.getUserDetailByUserId(userId);
